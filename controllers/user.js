@@ -2,10 +2,7 @@ const registerdata = require("../modals/register");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-if (typeof localStorage === "undefined" || localStorage === null) {
-  var LocalStorage = require("node-localstorage").LocalStorage;
-  localStorage = new LocalStorage("./scratch");
-}
+
 require("dotenv/config");
 
 const getuser = async (req, res) => {
@@ -25,23 +22,15 @@ const getuser = async (req, res) => {
 };
 
 const registeruser = async (req, res) => {
-  const password = await bcrypt.hash(req.body.password, 10);
-  const userregister = new registerdata({
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-    gender: req.body.gender,
-    email: req.body.email,
-    phoneno: req.body.phoneno,
-    password: password,
-  });
-  userregister
-    .save()
-    .then(() => {
-      res.status(200).send(` user registered`);
-    })
-    .catch((err) => {
-      res.status(404).send(err.message);
-    });
+  try {
+    req.body.password = await bcrypt.hash(req.body.password, 10);
+    const userregister = new registerdata(req.body);
+    const user = await userregister.save();
+    console.log(user);
+    return res.status(201).send({ message: "user registered", data: user });
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
 };
 
 // const transporter = nodemailer.createTransport({
@@ -67,44 +56,42 @@ const registeruser = async (req, res) => {
 // });
 
 const loginuser = async (req, res) => {
-  const { email, password } = req.body;
-  const user = await registerdata.findOne({ email }).lean();
-  if (!user) {
-    res.status(404).json({ error: "Invalid email" });
-  }
-  if (await bcrypt.compare(password, user.password)) {
+  try {
+    const { email, password } = req.body;
+    const user = await registerdata.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "Invalid email" });
+    }
+    const matchpass = await bcrypt.compare(password, user.password);
+    if (!matchpass) {
+      return res.status(400).send("Invalid credentials");
+    }
     const token = jwt.sign(
-      { id: user._id, email: user.email },
+      { id: user._id },
       process.env.jwt_secret_key
-      // {
-      //   expiresIn: "1s",
-      // }
+      // { expiresIn: "1s"}
     );
-    localStorage.setItem("token", token);
-    res.render("./index.html");
-  } else {
-    res.status(404).json({ error: "Invalid email/password" });
+    return res.send({ token, message: "Login successfully!" });
+  } catch (error) {
+    return res.status(400).send(error);
   }
 };
 
 const changepassword = async (req, res) => {
   const password = req.body.password;
-  const token = localStorage.getItem("token");
   try {
-    const user = jwt.verify(token, process.env.jwt_secret_key);
-    const _id = user.id;
+    const id = req.me.id;
     const hashedpassword = await bcrypt.hash(password, 10);
     await registerdata.updateOne(
-      { _id },
+      { id },
       {
         $set: { password: hashedpassword },
       }
     );
+    return res.send({ message: "ok" });
   } catch (err) {
-    res.json({ message: error });
+    return res.status(400).send(err.message);
   }
-
-  res.send({ message: "ok" });
 };
 
 module.exports = {

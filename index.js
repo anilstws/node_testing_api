@@ -1,17 +1,16 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const app = express();
 const port = 5000;
 const productroute = require("./router/product");
 const userroute = require("./router/user");
 const path = require("path");
 const ejs = require("ejs");
-const auth = require("./middleware/auth");
+const { auth } = require("./middleware/auth");
 
 const mongoose = require("mongoose");
 require("dotenv/config");
 
-app.use(bodyParser.json());
+app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 app.use("/product", productroute);
 app.use("/user", userroute);

@@ -4,7 +4,7 @@ const {
   registerValidation,
   loginValidation,
 } = require("../validation/validation");
-const auth = require("../middleware/auth");
+const { auth } = require("../middleware/auth");
 const {
   registeruser,
   getuser,
