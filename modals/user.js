@@ -23,4 +23,4 @@ const registerschema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("registerdata", registerschema);
+module.exports = mongoose.model("user", registerschema);

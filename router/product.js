@@ -38,25 +38,18 @@ const {
 } = require("../controllers/product");
 
 router.get("/", auth, getproduct);
-
 router.post(
-  "/",
+  "/add",
   auth,
   upload.single("productimg"),
   addproductValidation,
   createproduct
 );
-
-router.get("/findproduct", auth, findproductwb);
-
-router.get("/:_id", auth, findproduct);
-
-router.patch("/updateproduct", auth, updateproductwb);
-
-router.patch("/:_id", auth, updateproduct);
-
-router.delete("/deleteproduct", auth, deleteproductwb);
-
-router.delete("/:_id", auth, deleteproduct);
+router.get("/find", auth, findproductwb);
+router.get("/find/:_id", auth, findproduct);
+router.patch("/update", auth, updateproductwb);
+router.patch("/update/:_id", auth, updateproduct);
+router.delete("/delete", auth, deleteproductwb);
+router.delete("/delete/:_id", auth, deleteproduct);
 
 module.exports = router;

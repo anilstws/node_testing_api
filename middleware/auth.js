@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const registerdata = require("../modals/register");
+const user = require("../modals/user");
 
 const auth = async (req, res, next) => {
   if (!req.header("Authorization")) {
@@ -9,10 +9,18 @@ const auth = async (req, res, next) => {
   }
   const token = req.header("Authorization").replace("Bearer ", "");
   try {
-    const user = jwt.verify(token, process.env.jwt_secret_key);
-    const me = await registerdata.findOne({ _id: user.id });
+    const data = jwt.verify(token, process.env.jwt_secret_key);
+    if (!data) {
+      return res.status(400).send({
+        error: true,
+        message: "Invalid token!",
+      });
+    }
+    // console.log("user", data);
+    const me = await user.findById(data.id);
+    // console.log("me", me);
     if (!me) {
-      return res.status(400).send("Authentication error!");
+      return res.status(404).send("User not found!");
     }
     req.me = me;
     next();

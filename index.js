@@ -26,7 +26,13 @@ app.get("/", auth, (req, res) => {
 //Set up default mongoose connection
 mongoose.connect(
   process.env.db_link,
-  { useNewUrlParser: true, useNewUrlParser: true, autoIndex: true },
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    // autoIndex: true,
+    // useCreateIndex: true,
+    // useFindAndModify: false,
+  },
   () => console.log("Connected to database.")
 );
 

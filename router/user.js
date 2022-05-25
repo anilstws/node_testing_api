@@ -3,33 +3,27 @@ const router = express.Router();
 const {
   registerValidation,
   loginValidation,
+  updateuserValidation,
 } = require("../validation/validation");
 const { auth } = require("../middleware/auth");
 const {
   registeruser,
   getuser,
+  getprofile,
   loginuser,
   changepassword,
+  finduserbyid,
+  updateuser,
+  dltuser,
 } = require("../controllers/user");
 
 router.get("/", getuser);
-
-router.post("/userregister", registerValidation, registeruser);
-
-router.post("/userlogin", loginValidation, loginuser);
-
+router.get("/me", auth, getprofile);
+router.post("/register", registerValidation, registeruser);
+router.post("/login", loginValidation, loginuser);
 router.post("/changepassword", auth, changepassword);
-
-// router.get("/finduser", finduserwb);
-
-// router.get("/:_id", finduser);
-
-// router.delete("/:_id", deleteuser);
-
-// router.delete("/deleteuser", deleteuserwb);
-
-// router.patch("/:_id", updateuser);
-
-// router.patch("/updateuser", updateuserwb);
+router.get("/find", finduserbyid);
+router.patch("/update", auth, updateuserValidation, updateuser);
+router.delete("/delete", auth, dltuser);
 
 module.exports = router;
