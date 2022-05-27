@@ -18,7 +18,7 @@ app.set("view engine", "html");
 app.engine("html", ejs.renderFile);
 app.set("views", path.join(__dirname, "/views"));
 
-app.get("/", auth, (req, res) => {
+app.get("/", (req, res) => {
   res.render("./index.html");
 });
 
