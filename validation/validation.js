@@ -1,4 +1,4 @@
-const joi = require("Joi");
+const joi = require("joi");
 
 const registerValidation = async (req, res, next) => {
   const schema = joi.object({
