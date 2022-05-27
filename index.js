@@ -1,14 +1,13 @@
 const express = require("express");
 const app = express();
-const port = 5000;
 const productroute = require("./router/product");
 const userroute = require("./router/user");
 const path = require("path");
 const ejs = require("ejs");
 const { auth } = require("./middleware/auth");
+require("dotenv/config");
 
 const mongoose = require("mongoose");
-require("dotenv/config");
 
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
@@ -36,6 +35,6 @@ mongoose.connect(
   () => console.log("Connected to database.")
 );
 
-app.listen(port, () =>
-  console.log(`server running on http://localhost:${port}`)
+app.listen(process.env.port, () =>
+  console.log(`server running on http://localhost:${process.env.port}`)
 );
