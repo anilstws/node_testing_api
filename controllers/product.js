@@ -1,5 +1,4 @@
 const productdata = require("../modals/product");
-const sharp = require("sharp");
 
 const getproduct = async (req, res) => {
   try {
@@ -22,11 +21,6 @@ const createproduct = async (req, res) => {
     if (!req.file) {
       productimg = null;
     } else {
-      // const buffer = await sharp(req.file.path)
-      //   .resize({ width: 250, height: 250 })
-      //   .png()
-      //   .toBuffer();
-      // console.log(buffer);
       productimg = req.file.path;
     }
     const newproduct = new productdata({
