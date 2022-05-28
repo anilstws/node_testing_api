@@ -30,11 +30,9 @@ const createproduct = async (req, res) => {
       productimg: productimg,
     });
     newproduct.save().then(() => {
-      res
-        .status(200)
-        .send(
-          `Product with the name ${newproduct.firstname} added to the Database`
-        );
+      res.status(200).send({
+        message: `Product with the name ${newproduct.firstname} added to the Database`,
+      });
     });
   } catch (error) {
     res.status(404).send(err.message);
