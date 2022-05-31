@@ -22,7 +22,7 @@ router.get("/me", auth, getprofile);
 router.post("/register", registerValidation, registeruser);
 router.post("/login", loginValidation, loginuser);
 router.post("/changepassword", auth, changepassword);
-router.get("/find", finduserbyid);
+router.post("/find", finduserbyid);
 router.patch("/update", auth, updateuserValidation, updateuser);
 router.delete("/delete", auth, dltuser);
 
