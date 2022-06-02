@@ -4,7 +4,8 @@ const {
   registerValidation,
   loginValidation,
   updateuserValidation,
-} = require("../validation/validation");
+  verifyuserValidation,
+} = require("../utils/validation");
 const { auth } = require("../middleware/auth");
 const {
   registeruser,
@@ -15,11 +16,13 @@ const {
   finduserbyid,
   updateuser,
   dltuser,
+  verifyuser,
 } = require("../controllers/user");
 
 router.get("/", getuser);
 router.get("/me", auth, getprofile);
 router.post("/register", registerValidation, registeruser);
+router.post("/verify", verifyuserValidation, verifyuser);
 router.post("/login", loginValidation, loginuser);
 router.post("/changepassword", auth, changepassword);
 router.post("/find", finduserbyid);

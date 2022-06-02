@@ -21,6 +21,13 @@ const registerschema = mongoose.Schema({
   gender: {
     type: String,
   },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
+  otp: {
+    type: Number,
+  },
 });
 
 module.exports = mongoose.model("user", registerschema);

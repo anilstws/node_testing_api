@@ -27,7 +27,20 @@ const registerValidation = async (req, res, next) => {
   }
   next();
 };
-
+const verifyuserValidation = async (req, res, next) => {
+  const schema = joi.object({
+    email: joi.string().email().required(),
+    otp: joi.number().required(),
+  });
+  const value = await schema.validate(req.body);
+  if (value.error) {
+    return res.json({
+      success: 0,
+      message: value.error.details[0].message,
+    });
+  }
+  next();
+};
 const loginValidation = async (req, res, next) => {
   const schema = joi.object({
     email: joi.string().email().required(),
@@ -84,6 +97,7 @@ const addproductValidation = async (req, res, next) => {
 
 module.exports = {
   registerValidation,
+  verifyuserValidation,
   loginValidation,
   updateuserValidation,
   addproductValidation,
