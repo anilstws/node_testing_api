@@ -47,7 +47,7 @@ const registeruser = async (req, res) => {
     </div>
   </div>`;
     const sendingmail = await sendmail({
-      to: "atulc.tws@gmail.com",
+      to: "externaluser.tws@gmail.com",
       subject: "Verification email | Node Testing API",
       html: message,
     });
@@ -57,12 +57,9 @@ const registeruser = async (req, res) => {
       data: saveuser,
     });
   } catch (err) {
-    if (err.message.includes("email")) {
-      return res
-        .status(501)
-        .send({ error: true, message: "Email has not been sent!" });
-    }
-    return res.status(400).send({ error: true, message: err.message });
+    return res
+      .status(400)
+      .send({ error: true, message: err.response || err.message });
   }
 };
 
