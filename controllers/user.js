@@ -57,9 +57,7 @@ const registeruser = async (req, res) => {
       data: saveuser,
     });
   } catch (err) {
-    return res
-      .status(400)
-      .send({ error: true, message: err.response || err.message });
+    return res.status(400).send({ error: true, message: err.message });
   }
 };
 
