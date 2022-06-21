@@ -6,10 +6,15 @@ const sendmail = async (options) => {
       host: "smtp.gmail.com",
       port: 587,
       secure: false,
+      // tls: {
+      //   rejectUnauthorized: true,
+      //   minVersion: "TLSv1.2",
+      // servername: "example.com"
+      // },
       service: "gmail",
       auth: {
-        user: "externaluser.tws@gmail.com",
-        pass: "exterTWSnal%%$$23",
+        user: process.env.email_name,
+        pass: process.env.email_pass,
       },
     });
     const body = {
